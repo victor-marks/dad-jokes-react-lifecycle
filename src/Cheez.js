@@ -13,18 +13,17 @@ class Cheez extends Component {
 
   componentDidMount() {
     axios.get("https://icanhazdadjoke.com/search", { headers: { Accept: "application/json" }, params: { limit: 10 } }).then(res => {
-      let jokeObjects = res.data.results
-      let jokeArray = jokeObjects.map(j => {
-        return j.joke
-      })
 
-      this.setState({ jokes: [...jokeArray], isLoading: false })
+      let jokes = res.data.results.map(j => {
+        return { ...j, score: 1 }
+      })
+      this.setState({ jokes, isLoading: false })
+
     })
   }
 
 
   render() {
-    console.log(this.state.isLoading)
     return this.state.isLoading ? <h1>Loading...</h1> : <JokeList jokes={this.state.jokes} />
   }
 
